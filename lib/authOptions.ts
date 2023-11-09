@@ -5,7 +5,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import axios from "axios";
 export const authOptions: AuthOptions = {
-  adapter: MongoDBAdapter(clientPromise),
+  adapter: MongoDBAdapter(clientPromise, {
+    databaseName: "notehub",
+  }),
   session: {
     strategy: "jwt",
   },
@@ -28,14 +30,17 @@ export const authOptions: AuthOptions = {
       async authorize(credentials, req) {
         const username = credentials?.username;
         const password = credentials?.password;
-        const { data, status } = await axios.get("/api/users", {
-          headers: {
-            Accept: "application/json",
-          },
-        });
-
+        const { data, status } = await axios.get(
+          `/api/users?username=${username}&password=${password}`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+        console.log(data.data);
         if (status === 200) {
-          console.log(data);
+          return data.data;
         } else {
           return null;
         }

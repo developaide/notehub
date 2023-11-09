@@ -1,8 +1,13 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowRightIcon } from "lucide-react";
-import React from "react";
+import LoginDialog from "./LoginDialog";
 
-const Header = () => {
+import { authOptions } from "@/lib/authOptions";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
+
+const Header = async () => {
+  const session = await getServerSession(authOptions);
   return (
     <>
       <h1 className="tracking-wide max-w-4xl text-center text-2xl md:text-4xl xl:text-5xl font-semibold">
@@ -12,13 +17,20 @@ const Header = () => {
         <span className="text-green-500">Goals</span>. Collect in one place with{" "}
         <span className="underline">NoteHub</span>
       </h1>
-      <h3 className="max-w-3xl lg:mt-4  tracking-wide text-center font-bold text-xl lg:text-3xl">
+      <h3 className="mb-4 max-w-3xl lg:mt-4  tracking-wide text-center font-bold text-xl lg:text-3xl">
         NoteHub is a general note taking web application, collection and
         organize your note
       </h3>
-      <Button size={"lg"} className="text-lg">
-        Enter NoteHub <ArrowRightIcon className="ml-3" />
-      </Button>
+      {session ? (
+        <Link
+          href={"/dashboard"}
+          className={buttonVariants({ variant: "default" })}
+        >
+          Enter NoteHub <ArrowRightIcon className="ml-3" />
+        </Link>
+      ) : (
+        <LoginDialog />
+      )}
     </>
   );
 };

@@ -31,7 +31,9 @@ import Link from "next/link";
 import Separator from "./Separator";
 
 const registerForm = z.object({
-  email: z.string().email(),
+  username: z.string().min(3, {
+    message: "username must be at least 3 character",
+  }),
   password: z.string().min(6, {
     message: "password must be at least 6 character",
   }),
@@ -41,15 +43,16 @@ export default function LoginDialog() {
   const form = useForm<z.infer<typeof registerForm>>({
     resolver: zodResolver(registerForm),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
 
   async function onSubmit(value: z.infer<typeof registerForm>) {
+    console.log(value);
     signIn("credentials", {
       callbackUrl: "/dashboard",
-      email: value.email,
+      username: value.username,
       password: value.password,
     });
   }
@@ -58,13 +61,13 @@ export default function LoginDialog() {
     <Dialog>
       <DialogTrigger asChild>
         <Button>
-          <span className="text-lg">Login To SwiftTalk</span>
+          <span className="text-lg">Login To NoteHub</span>
           <LogInIcon className="ml-2 h-6 w-6" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-xl">Login To SwiftTalk</DialogTitle>
+          <DialogTitle className="text-xl">Login To NoteHub</DialogTitle>
           <DialogDescription className="text-md">
             Login in to our with your desire methods
           </DialogDescription>
@@ -105,13 +108,14 @@ export default function LoginDialog() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="email"
+              name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="e.g foo@example.com"
+                      type="text"
+                      placeholder="e.g foo"
                       {...field}
                       required
                     />
@@ -128,7 +132,12 @@ export default function LoginDialog() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g password123" {...field} required />
+                    <Input
+                      type="password"
+                      placeholder="e.g password123"
+                      {...field}
+                      required
+                    />
                   </FormControl>
                   <FormDescription>This is your password.</FormDescription>
                   <FormMessage />
