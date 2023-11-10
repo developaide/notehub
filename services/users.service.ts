@@ -2,7 +2,7 @@ import { db } from "@/lib/mongodb";
 import argon2 from "argon2";
 export interface User {
   _id?: string;
-  username: string;
+  name: string;
   email: string;
   image?: string | null;
   password: string;
@@ -20,25 +20,29 @@ export async function createUser(payload: User) {
 }
 
 export async function findUserByUserName({
-  username,
+  name,
   password,
 }: {
-  username: string;
+  name: string;
   password: string;
 }) {
   try {
-    const user = await (await db())
-      .collection<User>("users")
-      .findOne({ username }, { projection: { password: 0 } });
+    const user = await (await db()).collection<User>("users").findOne({ name });
 
-    if (!user)
-      throw new Error(`Could not found user with username = ${username}`);
+    if (!user) throw new Error(`Could not found user with name = ${name}`);
 
     const authPassword = await argon2.verify(user.password, password);
 
     if (!authPassword) throw new Error(`Invalid password!`);
 
-    return user;
+    return {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      image: user.image,
+    };
   } catch (e: any) {
     throw new Error(e.message);
   }

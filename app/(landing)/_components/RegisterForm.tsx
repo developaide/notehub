@@ -11,17 +11,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const registerForm = z
   .object({
-    username: z.string().min(3, {
-      message: "username must be at least 3 character",
+    name: z.string().min(3, {
+      message: "name must be at least 3 character",
     }),
     email: z.string().email(),
     password: z.string().min(6, {
@@ -37,10 +37,11 @@ const registerForm = z
   });
 
 const RegisterFrom = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof registerForm>>({
     resolver: zodResolver(registerForm),
     defaultValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
       confirm_password: "",
@@ -52,7 +53,7 @@ const RegisterFrom = () => {
       "http://localhost:3000/api/users",
       {
         email: value.email,
-        username: value.username,
+        name: value.name,
         password: value.password,
       },
       {
@@ -65,7 +66,7 @@ const RegisterFrom = () => {
 
     if (status === 201) {
       toast.success("Successfully register");
-      return redirect("/");
+      return router.push("/");
     } else {
       toast.error("Could not register");
     }
@@ -76,7 +77,7 @@ const RegisterFrom = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="username"
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>

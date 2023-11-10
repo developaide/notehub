@@ -31,8 +31,8 @@ import Link from "next/link";
 import Separator from "./Separator";
 
 const registerForm = z.object({
-  username: z.string().min(3, {
-    message: "username must be at least 3 character",
+  name: z.string().min(3, {
+    message: "name must be at least 3 character",
   }),
   password: z.string().min(6, {
     message: "password must be at least 6 character",
@@ -43,16 +43,15 @@ export default function LoginDialog() {
   const form = useForm<z.infer<typeof registerForm>>({
     resolver: zodResolver(registerForm),
     defaultValues: {
-      username: "",
+      name: "",
       password: "",
     },
   });
 
   async function onSubmit(value: z.infer<typeof registerForm>) {
-    console.log(value);
     signIn("credentials", {
       callbackUrl: "/dashboard",
-      username: value.username,
+      name: value.name,
       password: value.password,
     });
   }
@@ -108,7 +107,7 @@ export default function LoginDialog() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="username"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
@@ -120,7 +119,6 @@ export default function LoginDialog() {
                       required
                     />
                   </FormControl>
-                  <FormDescription>This is your email.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -139,13 +137,12 @@ export default function LoginDialog() {
                       required
                     />
                   </FormControl>
-                  <FormDescription>This is your password.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button type="submit">Register </Button>
+            <Button type="submit">Login</Button>
           </form>
         </Form>
       </DialogContent>

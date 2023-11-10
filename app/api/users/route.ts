@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 import argon2 from "argon2";
 export async function POST(req: NextRequest) {
   try {
-    const { username, email, password } = await req.json();
+    const { name, email, password } = await req.json();
 
     const hashPassword = await argon2.hash(password);
 
     const user = await createUser({
-      username,
+      name,
       email,
       password: hashPassword,
       createdAt: new Date(),
@@ -45,12 +45,12 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const username = searchParams.get("username");
+    const name = searchParams.get("name");
     const password = searchParams.get("password");
-    console.log(username, password);
+
     const user = await findUserByUserName({
       password: password as string,
-      username: username as string,
+      name: name as string,
     });
 
     if (user) {

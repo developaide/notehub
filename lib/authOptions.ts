@@ -20,7 +20,7 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", placeholder: "e.g foo", type: "text" },
+        name: { label: "Name", placeholder: "e.g foo", type: "text" },
         password: {
           label: "Password",
           placeholder: "e.g foo123",
@@ -28,18 +28,18 @@ export const authOptions: AuthOptions = {
         },
       },
       async authorize(credentials, req) {
-        const username = credentials?.username;
-        const password = credentials?.password;
-        const { data, status } = await axios.get(
-          `/api/users?username=${username}&password=${password}`,
+        const username = encodeURIComponent(credentials?.name as string);
+        const password = encodeURIComponent(credentials?.password as string);
+
+        const res = await fetch(
+          `http:localhost:3000/api/users?name=${username}&password=${password}`,
           {
-            headers: {
-              Accept: "application/json",
-            },
+            method: "GET",
           }
         );
-        console.log(data.data);
-        if (status === 200) {
+
+        const data = await res.json();
+        if (res.ok && data.data) {
           return data.data;
         } else {
           return null;
