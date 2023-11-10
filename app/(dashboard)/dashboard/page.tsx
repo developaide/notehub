@@ -7,7 +7,7 @@ const Dashboard = async () => {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return redirect("/");
+    redirect("/");
   }
 
   return (
