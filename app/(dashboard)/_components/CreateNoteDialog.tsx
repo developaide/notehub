@@ -19,6 +19,7 @@ import { PlusIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import EditorBox from "./EditorBox";
 import { useState } from "react";
+import { createNote } from "@/services/notes.service";
 
 export type NoteType = {
   title: string;
@@ -33,9 +34,16 @@ export function CreateNoteDialog() {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
 
-  // title , userId, content, isPublished
-
-  function saveNoteToDB({ content, isPublished, title, userId }: NoteType) {}
+  // async function saveNoteToDB({
+  //   content,
+  //   isPublished = false,
+  //   title,
+  //   userId,
+  //   coverImg,
+  //   icon,
+  // }: NoteType) {
+  //   await createNote({ content, isPublished, title, userId, coverImg, icon });
+  // }
 
   return (
     <Dialog>

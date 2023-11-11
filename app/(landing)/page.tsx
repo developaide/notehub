@@ -1,8 +1,6 @@
-import { authOptions } from "@/lib/authOptions";
 import Footer from "./_components/Footer";
 import Header from "./_components/Header";
 import Hero from "./_components/Hero";
-import { getServerSession } from "next-auth";
 
 export default async function LadingPage() {
   return (

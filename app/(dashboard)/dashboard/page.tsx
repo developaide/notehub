@@ -1,7 +1,6 @@
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { CreateNote } from "../_components/CreateNote";
 import { CreateNoteDialog } from "../_components/CreateNoteDialog";
 
 const Dashboard = async () => {
@@ -10,6 +9,7 @@ const Dashboard = async () => {
   if (!session) {
     redirect("/");
   }
+  console.log(session.user.userId);
 
   return (
     <div>

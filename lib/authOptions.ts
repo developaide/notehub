@@ -3,7 +3,7 @@ import { AuthOptions } from "next-auth";
 import clientPromise from "./mongodb";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
-import axios from "axios";
+import { findUserByName } from "@/services/users.service";
 export const authOptions: AuthOptions = {
   adapter: MongoDBAdapter(clientPromise, {
     databaseName: "notehub",
@@ -47,4 +47,23 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, account }) {
+      if (account) {
+        const user = await findUserByName({ name: token.name as string });
+
+        if (user) {
+          token.userId = user._id;
+        }
+        token.accessToken = account.access_token;
+      }
+
+      return token;
+    },
+    async session({ token, session }) {
+      session.accessToken = token.accessToken;
+      session.user.userId = token.userId;
+      return session;
+    },
+  },
 };

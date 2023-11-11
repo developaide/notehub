@@ -70,3 +70,22 @@ export async function findUserByUserName({
     throw new Error(e.message);
   }
 }
+
+export async function findUserByName({ name }: { name: string }) {
+  try {
+    const user = await (await db()).collection<User>("users").findOne({ name });
+
+    if (!user) return false;
+
+    return {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      image: user.image,
+    };
+  } catch (e: any) {
+    throw new Error(e.message);
+  }
+}
