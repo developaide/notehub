@@ -28,7 +28,7 @@ export function ReadNoteDialog({ title, content }: ReadNoteDialogProps) {
     <Dialog>
       <DialogTrigger asChild>
         <Card
-          className="min-w-[350px] min-h-[200px]  cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
+          className="min-w-[250px] min-h-[200px]  cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
           title="create new note"
           aria-label="create new note"
         >
