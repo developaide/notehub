@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import EditorBox from "./EditorBox";
 import { useState } from "react";
 import { NoteType } from "./CreateNote";
+import toast from "react-hot-toast";
 
 type CreateNoteDialogProps = {
   userId?: string;
@@ -30,7 +31,7 @@ type CreateNoteDialogProps = {
     userId,
     coverImg,
     icon,
-  }: NoteType) => void;
+  }: NoteType) => Promise<boolean>;
 };
 
 export function CreateNoteDialog({
@@ -75,14 +76,19 @@ export function CreateNoteDialog({
         <EditorBox setContent={setContent} />
         <DialogFooter>
           <Button
-            onClick={() =>
-              saveNoteToDB({
+            onClick={async () => {
+              const saveNote = await saveNoteToDB({
                 content,
                 isPublished: false,
                 title,
                 userId: userId as string,
-              })
-            }
+              });
+              if (saveNote) {
+                toast.success("Successfully created new Note");
+              } else {
+                toast.error("Could not create Note");
+              }
+            }}
           >
             Save changes
           </Button>

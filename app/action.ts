@@ -20,7 +20,8 @@ export async function saveNoteToDB({
       coverImg,
       icon,
     });
+    return true;
   } catch (e: any) {
-    throw new Error(e.message);
+    return false;
   }
 }
