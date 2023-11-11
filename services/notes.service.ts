@@ -1,4 +1,4 @@
-import { NoteType } from "@/app/(dashboard)/_components/CreateNoteDialog";
+import { NoteType } from "@/app/(dashboard)/_components/CreateNote";
 import { db } from "@/lib/mongodb";
 
 export async function createNote({
@@ -20,6 +20,19 @@ export async function createNote({
     });
     return true;
   } catch (e: any) {
-    throw new Error(e.message);
+    console.error(e.message);
+    throw new Error("Could not create note");
+  }
+}
+
+export async function getAllNoteForAuthUser(userId: string) {
+  try {
+    const notes = (await db()).collection<NoteType>("notes").find({ userId });
+
+    if (!notes) return false;
+
+    return notes;
+  } catch (e: any) {
+    throw new Error("Could not create note");
   }
 }

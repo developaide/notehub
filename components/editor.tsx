@@ -1,10 +1,6 @@
 "use client"; // this registers <Editor> as a Client Component
 import { BlockNoteEditor, PartialBlock } from "@blocknote/core";
-import {
-  BlockNoteView,
-  ReactSlashMenuItem,
-  useBlockNote,
-} from "@blocknote/react";
+import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import "@blocknote/core/style.css";
 import { useTheme } from "next-themes";
 

@@ -19,31 +19,27 @@ import { PlusIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import EditorBox from "./EditorBox";
 import { useState } from "react";
-import { createNote } from "@/services/notes.service";
+import toast from "react-hot-toast";
+import { NoteType } from "./CreateNote";
 
-export type NoteType = {
-  title: string;
-  userId: string;
-  content: string;
-  isPublished: boolean;
-  icon?: string;
-  coverImg?: string;
+type CreateNoteDialogProps = {
+  userId?: string;
+  saveNoteToDB: ({
+    content,
+    isPublished,
+    title,
+    userId,
+    coverImg,
+    icon,
+  }: NoteType) => void;
 };
 
-export function CreateNoteDialog() {
+export function CreateNoteDialog({
+  saveNoteToDB,
+  userId,
+}: CreateNoteDialogProps) {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
-
-  // async function saveNoteToDB({
-  //   content,
-  //   isPublished = false,
-  //   title,
-  //   userId,
-  //   coverImg,
-  //   icon,
-  // }: NoteType) {
-  //   await createNote({ content, isPublished, title, userId, coverImg, icon });
-  // }
 
   return (
     <Dialog>
@@ -79,7 +75,18 @@ export function CreateNoteDialog() {
         </DialogHeader>
         <EditorBox setContent={setContent} />
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button
+            onClick={() =>
+              saveNoteToDB({
+                content,
+                isPublished: false,
+                title,
+                userId: userId as string,
+              })
+            }
+          >
+            Save changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
