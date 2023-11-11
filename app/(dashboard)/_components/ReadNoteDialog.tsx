@@ -12,13 +12,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import EditorBox from "./EditorBox";
 import { useState } from "react";
+import { editTheNote } from "@/app/action";
+import toast from "react-hot-toast";
 
 type ReadNoteDialogProps = {
+  id: string;
   title: string;
   content: string;
 };
 
-export function ReadNoteDialog({ title, content }: ReadNoteDialogProps) {
+export function ReadNoteDialog({ id, title, content }: ReadNoteDialogProps) {
   const [editContent, setEditContent] = useState(content);
   const [editTitle, setEditTitle] = useState(title);
 
@@ -29,8 +32,8 @@ export function ReadNoteDialog({ title, content }: ReadNoteDialogProps) {
       <DialogTrigger asChild>
         <Card
           className="min-w-[250px] min-h-[200px]  cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
-          title="create new note"
-          aria-label="create new note"
+          title="read/edit the note"
+          aria-label="read/edit the note"
         >
           <CardHeader className="text-center">
             <CardTitle className=" text-2xl">{title}</CardTitle>
@@ -51,7 +54,22 @@ export function ReadNoteDialog({ title, content }: ReadNoteDialogProps) {
         </DialogHeader>
         <EditorBox initialContent={editContent} setContent={setEditContent} />
         <DialogFooter>
-          <Button>Edit</Button>
+          <Button
+            disabled={content === editContent ? true : false}
+            onClick={async () => {
+              const edit = await editTheNote(id, {
+                title: editTitle,
+                content: editContent,
+              });
+              if (edit) {
+                toast.success("Successfully edit the Note");
+              } else {
+                toast.error("Could not edit Note");
+              }
+            }}
+          >
+            {content === editContent ? "Edit" : "Save changes"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

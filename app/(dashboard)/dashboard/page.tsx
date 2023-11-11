@@ -18,6 +18,7 @@ const Dashboard = async () => {
       {notes &&
         notes.map((note) => (
           <ReadNote
+            id={note._id.toString()}
             title={note.title}
             content={note.content}
             key={note._id.toString()}

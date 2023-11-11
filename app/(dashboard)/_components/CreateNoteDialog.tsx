@@ -66,7 +66,7 @@ export function CreateNoteDialog({
         <DialogHeader>
           <DialogTitle>
             <Input
-              className="text-5xl border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-none focus-visible:ring-offset-0"
+              className="text-2xl md:text-3xl xl:text-4xl  border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-none focus-visible:ring-offset-0"
               placeholder="Title..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -76,6 +76,7 @@ export function CreateNoteDialog({
         <EditorBox setContent={setContent} />
         <DialogFooter>
           <Button
+            disabled={!title && !content ? true : false}
             onClick={async () => {
               const saveNote = await saveNoteToDB({
                 content,
@@ -90,7 +91,7 @@ export function CreateNoteDialog({
               }
             }}
           >
-            Save changes
+            Save
           </Button>
         </DialogFooter>
       </DialogContent>

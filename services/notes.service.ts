@@ -41,27 +41,17 @@ export async function getAllNoteForAuthUser(userId: string) {
   }
 }
 
-// export async function editNoteById(id: string, payload: Partial<NoteType>) {
-//   try {
-//     (await db()).collection<NoteType>("notes").updateOne({ _id: id }, payload);
-//     return true;
-//   } catch (e: any) {
-//     console.error(e.message);
-//     throw new Error("Could not create note");
-//   }
-// }
-
 export async function editNoteById(id: string, payload: Partial<NoteType>) {
   try {
-    const objectId = new ObjectId(id); // Convert the string id to ObjectId
+    const objectId = new ObjectId(id);
     const result = await (await db())
       .collection<NoteType>("notes")
       .updateOne({ _id: objectId }, { $set: payload });
 
     if (result.modifiedCount > 0) {
-      return true; // Return true if the document was successfully updated
+      return true;
     } else {
-      return false; // Return false if the document with the given id was not found
+      return false;
     }
   } catch (e: any) {
     console.error(e.message);
