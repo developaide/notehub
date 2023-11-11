@@ -4,15 +4,38 @@ export interface User {
   _id?: string;
   name: string;
   email: string;
-  image?: string | null;
+  image?: string;
   password: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export async function createUser(payload: User) {
+export async function createUser({
+  createdAt,
+  email,
+  name,
+  password,
+  updatedAt,
+  image,
+}: User) {
   try {
-    await (await db()).collection<User>("users").insertOne(payload);
+    const user = await (await db()).collection<User>("users").findOne({ name });
+
+    if (user) {
+      throw new Error(
+        `User already exist with name = ${name}! Name needs to be unique`
+      );
+    }
+
+    await (await db()).collection<User>("users").insertOne({
+      createdAt,
+      email,
+      name,
+      password,
+      updatedAt,
+      image: image ? image : "no_image",
+    });
+
     return true;
   } catch (e: any) {
     throw new Error(e.message);
