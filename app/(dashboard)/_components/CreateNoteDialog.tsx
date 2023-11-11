@@ -19,7 +19,6 @@ import { PlusIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import EditorBox from "./EditorBox";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { NoteType } from "./CreateNote";
 
 type CreateNoteDialogProps = {
@@ -45,7 +44,7 @@ export function CreateNoteDialog({
     <Dialog>
       <DialogTrigger asChild>
         <Card
-          className="w-[350px] cursor-pointer"
+          className="min-w-[350px] min-h-[200px] cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
           title="create new note"
           aria-label="create new note"
         >

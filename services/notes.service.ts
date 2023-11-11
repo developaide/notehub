@@ -24,10 +24,13 @@ export async function createNote({
     throw new Error("Could not create note");
   }
 }
-
+``;
 export async function getAllNoteForAuthUser(userId: string) {
   try {
-    const notes = (await db()).collection<NoteType>("notes").find({ userId });
+    const notes = (await db())
+      .collection<NoteType>("notes")
+      .find({ userId })
+      .toArray();
 
     if (!notes) return false;
 
