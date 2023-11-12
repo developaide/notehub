@@ -2,6 +2,14 @@ import { ModeToggle } from "@/components/mode-toggle";
 import Image from "next/image";
 import Link from "next/link";
 import { UserAvatar } from "./UserAvatar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { buttonVariants } from "@/components/ui/button";
+import { Globe2Icon } from "lucide-react";
 
 interface NavbarProp {
   name: string;
@@ -22,6 +30,19 @@ const Navbar = ({ name, email, image }: NavbarProp) => {
         </Link>
         <div className="flex items-center gap-10">
           <UserAvatar email={email} name={name} image={image} />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href={"/community"}
+                  className={buttonVariants({ variant: "ghost" })}
+                >
+                  <Globe2Icon className="text-sky-500 w-10 h-10" />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>NoteHub Community</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <ModeToggle />
         </div>
       </nav>
