@@ -21,8 +21,10 @@ import { useState } from "react";
 import { deleteNote, editTheNote } from "@/app/action";
 import toast from "react-hot-toast";
 import { Badge } from "@/components/ui/badge";
-import { TrashIcon } from "lucide-react";
+import { SmileIcon, TrashIcon } from "lucide-react";
 import { dateFormatter } from "@/lib/dateFormatter";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import IconPicker from "@/components/icon-picker";
 
 type ReadNoteDialogProps = {
   noteId: string;
@@ -33,6 +35,7 @@ type ReadNoteDialogProps = {
   isPublished: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  icon?: string;
 };
 
 export function ReadNoteDialog({
@@ -44,9 +47,11 @@ export function ReadNoteDialog({
   isPublished,
   createdAt,
   updatedAt,
+  icon,
 }: ReadNoteDialogProps) {
   const [editContent, setEditContent] = useState(content);
   const [editTitle, setEditTitle] = useState(title);
+  const [editEmoji, setEditEmoji] = useState(icon);
   const [open, setOpen] = useState(false);
   const firstText = JSON.parse(editContent)[0].content[0].text;
 
@@ -76,6 +81,7 @@ export function ReadNoteDialog({
       const edit = await editTheNote(noteId, {
         title: editTitle,
         content: editContent,
+        icon: editEmoji,
       });
       if (edit) {
         toast.success("Successfully edit the Note");
@@ -125,9 +131,16 @@ export function ReadNoteDialog({
       <Dialog
         open={open}
         onOpenChange={(open) => {
-          if (!open && content !== editContent) {
-            handleEditContent();
+          if (!open) {
+            if (
+              content !== editContent ||
+              title !== editTitle ||
+              icon !== editEmoji
+            ) {
+              handleEditContent();
+            }
           }
+
           setOpen(open);
         }}
       >
@@ -139,6 +152,9 @@ export function ReadNoteDialog({
           >
             <CardHeader className="text-center ">
               <CardTitle className="line-clamp-1 text-2xl mt-5">
+                {editEmoji && editEmoji !== "no_icon" && (
+                  <span>{editEmoji}</span>
+                )}
                 {title}
               </CardTitle>
             </CardHeader>
@@ -156,7 +172,14 @@ export function ReadNoteDialog({
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px] md:max-w-[750px] lg:max-w-[900px] xl:max-w-[1100px]">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="flex justify-center items-center">
+              <IconPicker onEmojiChange={setEditEmoji}>
+                {editEmoji && editEmoji !== "no_icon" ? (
+                  <h2 className="cursor-pointer text-4xl">{editEmoji}</h2>
+                ) : (
+                  <SmileIcon />
+                )}
+              </IconPicker>
               <Input
                 className="text-5xl border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-none focus-visible:ring-offset-0"
                 placeholder="Title..."
@@ -165,22 +188,34 @@ export function ReadNoteDialog({
               />
             </DialogTitle>
           </DialogHeader>
-          <EditorBox
-            isPublished={isPublished}
-            authUserId={authUserId}
-            userId={userId}
-            initialContent={editContent}
-            setContent={setEditContent}
-          />
+          <ScrollArea className="max-h-[400px] md:max-h-[600px] xl:max-h-[850px]">
+            <EditorBox
+              isPublished={isPublished}
+              authUserId={authUserId}
+              userId={userId}
+              initialContent={editContent}
+              setContent={setEditContent}
+            />
+          </ScrollArea>
           <DialogFooter>
             <Button
-              disabled={content === editContent ? true : false}
+              disabled={
+                content === editContent &&
+                title === editTitle &&
+                icon == editEmoji
+                  ? true
+                  : false
+              }
               onClick={() => {
                 handleEditContent();
                 setOpen(false);
               }}
             >
-              {content === editContent ? "Edit" : "Save changes"}
+              {content === editContent &&
+              title === editTitle &&
+              icon == editEmoji
+                ? "Edit"
+                : "Save changes"}
             </Button>
           </DialogFooter>
         </DialogContent>

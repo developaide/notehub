@@ -15,13 +15,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, SmileIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import EditorBox from "./EditorBox";
 import { useState } from "react";
-
 import toast from "react-hot-toast";
 import { NoteType } from "@/services/notes.service";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import IconPicker from "@/components/icon-picker";
 
 type CreateNoteDialogProps = {
   userId?: string;
@@ -40,6 +41,7 @@ export function CreateNoteDialog({
   userId,
 }: CreateNoteDialogProps) {
   const [content, setContent] = useState("");
+  const [emoji, setEmoji] = useState("");
   const [title, setTitle] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -52,6 +54,7 @@ export function CreateNoteDialog({
       isPublished: false,
       title,
       userId: userId as string,
+      icon: emoji,
     });
     if (saveNote) {
       toast.success("Successfully created new Note");
@@ -93,7 +96,10 @@ export function CreateNoteDialog({
       </DialogTrigger>
       <DialogContent className="w-[96%] sm:max-w-[500px] md:max-w-[750px] lg:max-w-[900px] xl:max-w-[1100px]  ">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="flex justify-center items-center">
+            <IconPicker onEmojiChange={setEmoji}>
+              {emoji ? <h2>{emoji}</h2> : <SmileIcon />}
+            </IconPicker>
             <Input
               className="text-2xl md:text-3xl xl:text-4xl  border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-none focus-visible:ring-offset-0"
               placeholder="Title..."
@@ -102,7 +108,9 @@ export function CreateNoteDialog({
             />
           </DialogTitle>
         </DialogHeader>
-        <EditorBox setContent={setContent} />
+        <ScrollArea className="max-h-[400px] md:max-h-[600px] xl:max-h-[750px]">
+          <EditorBox setContent={setContent} />
+        </ScrollArea>
         <DialogFooter>
           <Button
             disabled={title === "" && content == "" ? true : false}

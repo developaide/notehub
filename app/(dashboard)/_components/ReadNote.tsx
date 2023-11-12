@@ -10,6 +10,7 @@ const NoteCard = async ({
   isPublished,
   createdAt,
   updatedAt,
+  icon,
 }: {
   userId: string;
   noteId: string;
@@ -18,8 +19,11 @@ const NoteCard = async ({
   isPublished: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  icon?: string;
 }) => {
   const session = await getServerSession(authOptions);
+  console.log(icon);
+
   return (
     <ReadNoteDialog
       authUserId={session?.user.userId as string}
@@ -30,6 +34,7 @@ const NoteCard = async ({
       title={title}
       createdAt={createdAt}
       updatedAt={updatedAt}
+      icon={icon}
     />
   );
 };

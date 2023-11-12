@@ -26,6 +26,7 @@ const Dashboard = async () => {
             isPublished={note.isPublished}
             createdAt={note.createdAt}
             updatedAt={note.updatedAt}
+            icon={note.icon}
           />
         ))}
     </div>
