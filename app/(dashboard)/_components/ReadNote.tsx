@@ -8,12 +8,16 @@ const NoteCard = async ({
   title,
   content,
   isPublished,
+  createdAt,
+  updatedAt,
 }: {
   userId: string;
   noteId: string;
   title: string;
   content: string;
   isPublished: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }) => {
   const session = await getServerSession(authOptions);
   return (
@@ -24,6 +28,8 @@ const NoteCard = async ({
       noteId={noteId}
       content={content}
       title={title}
+      createdAt={createdAt}
+      updatedAt={updatedAt}
     />
   );
 };

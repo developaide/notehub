@@ -74,7 +74,7 @@ export function CreateNoteDialog({
     >
       <DialogTrigger asChild>
         <Card
-          className="min-w-[250px] min-h-[220px] cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
+          className=" min-w-[250px] min-h-[250px] cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
           title="create new note"
           aria-label="create new note"
         >
@@ -91,7 +91,7 @@ export function CreateNoteDialog({
           </CardContent>
         </Card>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] md:max-w-[750px] lg:max-w-[900px] xl:max-w-[1100px]">
+      <DialogContent className="w-[96%] sm:max-w-[500px] md:max-w-[750px] lg:max-w-[900px] xl:max-w-[1100px] h-full ">
         <DialogHeader>
           <DialogTitle>
             <Input

@@ -8,13 +8,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import EditorBox from "./EditorBox";
 import { useState } from "react";
 import { editTheNote } from "@/app/action";
 import toast from "react-hot-toast";
 import { Badge } from "@/components/ui/badge";
+import { TrashIcon } from "lucide-react";
+import { dateFormatter } from "@/lib/dateFormatter";
 
 type ReadNoteDialogProps = {
   noteId: string;
@@ -23,6 +31,8 @@ type ReadNoteDialogProps = {
   title: string;
   content: string;
   isPublished: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export function ReadNoteDialog({
@@ -32,6 +42,8 @@ export function ReadNoteDialog({
   authUserId,
   content,
   isPublished,
+  createdAt,
+  updatedAt,
 }: ReadNoteDialogProps) {
   const [editContent, setEditContent] = useState(content);
   const [editTitle, setEditTitle] = useState(title);
@@ -68,17 +80,25 @@ export function ReadNoteDialog({
   };
 
   return (
-    <div className="relative">
-      <Badge
-        className={`${
-          isPublished
-            ? "bg-green-500 text-white hover:text-black"
-            : "bg-sky-700 text-white hover:text-black"
-        } text-base absolute right-4 top-2 cursor-pointer `}
-        onClick={handlePublishToggle}
-      >
-        {isPublished ? "Publish" : "Private"}
-      </Badge>
+    <div className="relative ">
+      <div className="absolute flex justify-between items-center w-full px-4 mt-3">
+        <Badge
+          className={`${
+            isPublished
+              ? "bg-green-500 text-white hover:text-black"
+              : "bg-sky-700 text-white hover:text-black"
+          } text-base  cursor-pointer `}
+          onClick={handlePublishToggle}
+        >
+          {isPublished ? "Publish" : "Private"}
+        </Badge>
+        <Button
+          variant={"destructive"}
+          className="opacity-60 hover:opacity-100 transition-all"
+        >
+          <TrashIcon />
+        </Button>
+      </div>
 
       <Dialog
         open={open}
@@ -91,14 +111,25 @@ export function ReadNoteDialog({
       >
         <DialogTrigger asChild>
           <Card
-            className="min-w-[250px] min-h-[220px]  cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
+            className="min-w-[250px] min-h-[280px]  cursor-pointer hover:shadow-sm hover:shadow-neutral-400 pt-5"
             title="read/edit the note"
             aria-label="read/edit the note"
           >
             <CardHeader className="text-center ">
-              <CardTitle className=" text-2xl mt-5">{title}</CardTitle>
+              <CardTitle className="line-clamp-1 text-2xl mt-5">
+                {title}
+              </CardTitle>
             </CardHeader>
             <CardContent className="line-clamp-1">{firstText}</CardContent>
+            <CardFooter className="absolute bottom-0 flex-col justify-start items-start">
+              <h3 className="text-neutral-400">
+                {dateFormatter(createdAt as Date)}
+              </h3>
+              <h3 className="text-neutral-400">
+                {createdAt?.toString() !== updatedAt?.toString() &&
+                  `${dateFormatter(updatedAt as Date)} edited`}
+              </h3>
+            </CardFooter>
           </Card>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[500px] md:max-w-[750px] lg:max-w-[900px] xl:max-w-[1100px]">
