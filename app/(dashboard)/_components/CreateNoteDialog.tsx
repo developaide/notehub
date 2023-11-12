@@ -19,8 +19,9 @@ import { PlusIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import EditorBox from "./EditorBox";
 import { useState } from "react";
-import { NoteType } from "./CreateNote";
+
 import toast from "react-hot-toast";
+import { NoteType } from "@/services/notes.service";
 
 type CreateNoteDialogProps = {
   userId?: string;
@@ -41,8 +42,36 @@ export function CreateNoteDialog({
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [open, setOpen] = useState(false);
+
+  const handelCreateNewNote = async () => {
+    if (content === "") {
+      return toast.error("Could not create Note with content");
+    }
+    const saveNote = await saveNoteToDB({
+      content,
+      isPublished: false,
+      title,
+      userId: userId as string,
+    });
+    if (saveNote) {
+      toast.success("Successfully created new Note");
+    } else {
+      toast.error("Could not create Note");
+    }
+    setTitle("");
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => {
+        if (!open && content !== "" && title !== "") {
+          handelCreateNewNote();
+        }
+
+        setOpen(open);
+      }}
+    >
       <DialogTrigger asChild>
         <Card
           className="min-w-[250px] min-h-[220px] cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
@@ -76,19 +105,9 @@ export function CreateNoteDialog({
         <EditorBox setContent={setContent} />
         <DialogFooter>
           <Button
-            disabled={!title && !content ? true : false}
+            disabled={title === "" && content == "" ? true : false}
             onClick={async () => {
-              const saveNote = await saveNoteToDB({
-                content,
-                isPublished: false,
-                title,
-                userId: userId as string,
-              });
-              if (saveNote) {
-                toast.success("Successfully created new Note");
-              } else {
-                toast.error("Could not create Note");
-              }
+              handelCreateNewNote();
               setOpen(false);
             }}
           >

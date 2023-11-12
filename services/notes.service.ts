@@ -1,6 +1,16 @@
-import { NoteType } from "@/app/(dashboard)/_components/CreateNote";
 import { db } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
+
+export type NoteType = {
+  title: string;
+  userId: string;
+  content: string;
+  isPublished: boolean;
+  icon?: string;
+  coverImg?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 
 export async function createNote({
   content,
@@ -18,6 +28,8 @@ export async function createNote({
       userId,
       icon: icon ? icon : "no_icon",
       coverImg: coverImg ? coverImg : "no_coverImg",
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
     return true;
   } catch (e: any) {

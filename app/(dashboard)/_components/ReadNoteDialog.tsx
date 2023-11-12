@@ -55,6 +55,18 @@ export function ReadNoteDialog({
     }
   };
 
+  const handleEditContent = async () => {
+    const edit = await editTheNote(noteId, {
+      title: editTitle,
+      content: editContent,
+    });
+    if (edit) {
+      toast.success("Successfully edit the Note");
+    } else {
+      toast.error("Could not edit Note");
+    }
+  };
+
   return (
     <div className="relative">
       <Badge
@@ -68,7 +80,15 @@ export function ReadNoteDialog({
         {isPublished ? "Publish" : "Private"}
       </Badge>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={(open) => {
+          if (!open && content !== editContent) {
+            handleEditContent();
+          }
+          setOpen(open);
+        }}
+      >
         <DialogTrigger asChild>
           <Card
             className="min-w-[250px] min-h-[220px]  cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
@@ -102,16 +122,8 @@ export function ReadNoteDialog({
           <DialogFooter>
             <Button
               disabled={content === editContent ? true : false}
-              onClick={async () => {
-                const edit = await editTheNote(noteId, {
-                  title: editTitle,
-                  content: editContent,
-                });
-                if (edit) {
-                  toast.success("Successfully edit the Note");
-                } else {
-                  toast.error("Could not edit Note");
-                }
+              onClick={() => {
+                handleEditContent();
                 setOpen(false);
               }}
             >

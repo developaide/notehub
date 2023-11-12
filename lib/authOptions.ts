@@ -2,6 +2,7 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import { AuthOptions } from "next-auth";
 import clientPromise from "./mongodb";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import { findUserByName } from "@/services/users.service";
 export const authOptions: AuthOptions = {
@@ -13,6 +14,14 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET as string,
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRETS as string,
+      httpOptions: {
+        timeout: 3000,
+      },
+    }),
+
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRETS as string,
