@@ -51,6 +51,7 @@ export async function deleteNote({
 }) {
   try {
     await deleteNoteByIdAndAuthUser({ noteId, userId });
+    revalidatePath("/");
     return true;
   } catch (e: any) {
     return false;

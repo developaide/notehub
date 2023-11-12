@@ -1,19 +1,19 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOutIcon } from "lucide-react";
+import { Globe2Icon, LayoutDashboardIcon, LogOutIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface UserAvatarProp {
   name: string;
@@ -22,6 +22,8 @@ interface UserAvatarProp {
 }
 
 export function UserAvatar({ email, image, name }: UserAvatarProp) {
+  const path = usePathname();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -45,6 +47,25 @@ export function UserAvatar({ email, image, name }: UserAvatarProp) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem className="p-0 my-2">
+          {path === "/dashboard" ? (
+            <Link
+              href={"/community"}
+              className={`${buttonVariants({ variant: "secondary" })} w-full`}
+            >
+              <Globe2Icon className="text-sky-500 mr-2 " />
+              Explore the Community
+            </Link>
+          ) : (
+            <Link
+              href={"/dashboard"}
+              className={`${buttonVariants({ variant: "secondary" })} w-full`}
+            >
+              <LayoutDashboardIcon className="text-orange-500 mr-2 " />
+              Go to Dashboard
+            </Link>
+          )}
+        </DropdownMenuItem>
         <DropdownMenuItem className="p-0">
           <Button
             onClick={() => signOut()}

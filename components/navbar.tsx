@@ -1,7 +1,6 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import Image from "next/image";
 import Link from "next/link";
-import { UserAvatar } from "./UserAvatar";
 import {
   Tooltip,
   TooltipContent,
@@ -9,30 +8,39 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { buttonVariants } from "@/components/ui/button";
-import { Globe2Icon } from "lucide-react";
+import { Globe2Icon, LogInIcon } from "lucide-react";
+import { UserAvatar } from "./user-avatar";
 
 interface NavbarProp {
-  name: string;
-  email: string;
-  image: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  iconLink: string;
 }
 
-const Navbar = ({ name, email, image }: NavbarProp) => {
+const Navbar = ({ name, email, image, iconLink }: NavbarProp) => {
   return (
     <header className="bg-neutral-100 dark:bg-neutral-900 h-[8%]">
       <nav className="py-4 px-8  md:px-20 flex justify-between items-center">
         <Link
-          href={"/dashboard"}
+          href={iconLink}
           className="flex justify-between items-center gap-3"
         >
           <Image src={"/note.png"} alt="NoteHub icon" width={30} height={30} />
           <span className="underline font-bold text-lg">NoteHub</span>
         </Link>
         <div className="flex items-center gap-10">
-          <UserAvatar email={email} name={name} image={image} />
+          {email && name ? (
+            <UserAvatar email={email} name={name} image={image as string} />
+          ) : (
+            <Link href={"/"}>
+              <LogInIcon />
+            </Link>
+          )}
+
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger asChild>
+              <TooltipTrigger asChild className="hidden sm:block">
                 <Link
                   href={"/community"}
                   className={buttonVariants({ variant: "ghost" })}
@@ -43,6 +51,7 @@ const Navbar = ({ name, email, image }: NavbarProp) => {
               <TooltipContent>NoteHub Community</TooltipContent>
             </Tooltip>
           </TooltipProvider>
+
           <ModeToggle />
         </div>
       </nav>

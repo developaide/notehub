@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { ReadNoteDialog } from "./ReadNoteDialog";
 import { authOptions } from "@/lib/authOptions";
 
-const NoteCard = async ({
+const ReadNote = async ({
   noteId,
   userId,
   title,
@@ -22,7 +22,6 @@ const NoteCard = async ({
   icon?: string;
 }) => {
   const session = await getServerSession(authOptions);
-  console.log(icon);
 
   return (
     <ReadNoteDialog
@@ -39,4 +38,4 @@ const NoteCard = async ({
   );
 };
 
-export default NoteCard;
+export default ReadNote;

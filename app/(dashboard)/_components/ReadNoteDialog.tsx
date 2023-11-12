@@ -95,7 +95,7 @@ export function ReadNoteDialog({
 
   const handleDeleteNote = async () => {
     try {
-      const deleteN = await deleteNote({ noteId, userId });
+      const deleteN = await deleteNote({ noteId, userId: authUserId });
       if (deleteN) {
         toast.success("Successfully deleted the Note");
       } else {
@@ -119,13 +119,16 @@ export function ReadNoteDialog({
         >
           {isPublished ? "Publish" : "Private"}
         </Badge>
-        <Button
-          onClick={handleDeleteNote}
-          variant={"destructive"}
-          className="opacity-60 hover:opacity-100 transition-all"
-        >
-          <TrashIcon />
-        </Button>
+        <form action={handleDeleteNote}>
+          <Button
+            type="submit"
+            formAction={handleDeleteNote}
+            variant={"destructive"}
+            className="opacity-60 hover:opacity-100 transition-all"
+          >
+            <TrashIcon />
+          </Button>
+        </form>
       </div>
 
       <Dialog

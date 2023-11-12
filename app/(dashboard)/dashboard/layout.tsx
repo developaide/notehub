@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Navbar from "../_components/Navbar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
+import Navbar from "@/components/navbar";
 
 export const metadata: Metadata = {
   title: `Dashboard`,
@@ -16,6 +16,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
         name={session?.user?.name as string}
         email={session?.user?.email as string}
         image={session?.user?.image as string}
+        iconLink="/dashboard"
       />
       {children}
     </main>

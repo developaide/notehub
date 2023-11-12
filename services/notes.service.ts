@@ -49,7 +49,21 @@ export async function getAllNoteForAuthUser(userId: string) {
 
     return notes;
   } catch (e: any) {
-    throw new Error("Could not create note");
+    throw new Error("Could not retrieve notes");
+  }
+}
+export async function getAllNoteByPublished() {
+  try {
+    const notes = (await db())
+      .collection<NoteType>("notes")
+      .find({ isPublished: true })
+      .toArray();
+
+    if (!notes) return false;
+
+    return notes;
+  } catch (e: any) {
+    throw new Error("Could not retrieve notes");
   }
 }
 
@@ -67,7 +81,7 @@ export async function editNoteById(id: string, payload: Partial<NoteType>) {
     }
   } catch (e: any) {
     console.error(e.message);
-    throw new Error("Could not update note");
+    throw new Error("Could not update the note");
   }
 }
 
