@@ -1,6 +1,11 @@
 "use server";
 
-import { NoteType, createNote, editNoteById } from "@/services/notes.service";
+import {
+  NoteType,
+  createNote,
+  deleteNoteByIdAndAuthUser,
+  editNoteById,
+} from "@/services/notes.service";
 import { revalidatePath } from "next/cache";
 
 export async function saveNoteToDB({
@@ -31,6 +36,21 @@ export async function editTheNote(id: string, payload: Partial<NoteType>) {
   try {
     await editNoteById(id, { ...payload, updatedAt: new Date() });
     revalidatePath("/");
+    return true;
+  } catch (e: any) {
+    return false;
+  }
+}
+
+export async function deleteNote({
+  userId,
+  noteId,
+}: {
+  userId: string;
+  noteId: string;
+}) {
+  try {
+    await deleteNoteByIdAndAuthUser({ noteId, userId });
     return true;
   } catch (e: any) {
     return false;

@@ -70,3 +70,28 @@ export async function editNoteById(id: string, payload: Partial<NoteType>) {
     throw new Error("Could not update note");
   }
 }
+
+export async function deleteNoteByIdAndAuthUser({
+  noteId,
+  userId,
+}: {
+  noteId: string;
+  userId: string;
+}) {
+  try {
+    const noteObjectId = new ObjectId(noteId);
+
+    const deleteNote = await (await db())
+      .collection<NoteType>("notes")
+      .deleteOne({ _id: noteObjectId, userId });
+
+    if (deleteNote.deletedCount > 0) {
+      return true;
+    } else {
+      throw new Error("Could not delete the note");
+    }
+  } catch (e: any) {
+    console.error(e.message);
+    throw new Error("Something went wrong!");
+  }
+}

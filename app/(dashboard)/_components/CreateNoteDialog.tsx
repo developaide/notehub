@@ -91,7 +91,7 @@ export function CreateNoteDialog({
           </CardContent>
         </Card>
       </DialogTrigger>
-      <DialogContent className="w-[96%] sm:max-w-[500px] md:max-w-[750px] lg:max-w-[900px] xl:max-w-[1100px] h-full ">
+      <DialogContent className="w-[96%] sm:max-w-[500px] md:max-w-[750px] lg:max-w-[900px] xl:max-w-[1100px]  ">
         <DialogHeader>
           <DialogTitle>
             <Input

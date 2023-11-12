@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import EditorBox from "./EditorBox";
 import { useState } from "react";
-import { editTheNote } from "@/app/action";
+import { deleteNote, editTheNote } from "@/app/action";
 import toast from "react-hot-toast";
 import { Badge } from "@/components/ui/badge";
 import { TrashIcon } from "lucide-react";
@@ -51,31 +51,52 @@ export function ReadNoteDialog({
   const firstText = JSON.parse(editContent)[0].content[0].text;
 
   const handlePublishToggle = async () => {
-    const edit = await editTheNote(noteId, {
-      isPublished: isPublished ? false : true,
-    });
-    if (edit) {
-      isPublished
-        ? toast.success(
-            `Successfully private the Note with ID ${noteId.slice(0, 5)}`
-          )
-        : toast.success(
-            `Successfully published the Note with ID ${noteId.slice(0, 5)}`
-          );
-    } else {
+    try {
+      const edit = await editTheNote(noteId, {
+        isPublished: isPublished ? false : true,
+      });
+      if (edit) {
+        isPublished
+          ? toast.success(
+              `Successfully private the Note with ID ${noteId.slice(0, 5)}`
+            )
+          : toast.success(
+              `Successfully published the Note with ID ${noteId.slice(0, 5)}`
+            );
+      } else {
+        toast.error("Couldn't publish the Note!");
+      }
+    } catch (e: any) {
       toast.error("Couldn't publish the Note!");
     }
   };
 
   const handleEditContent = async () => {
-    const edit = await editTheNote(noteId, {
-      title: editTitle,
-      content: editContent,
-    });
-    if (edit) {
-      toast.success("Successfully edit the Note");
-    } else {
+    try {
+      const edit = await editTheNote(noteId, {
+        title: editTitle,
+        content: editContent,
+      });
+      if (edit) {
+        toast.success("Successfully edit the Note");
+      } else {
+        toast.error("Could not edit Note");
+      }
+    } catch (e: any) {
       toast.error("Could not edit Note");
+    }
+  };
+
+  const handleDeleteNote = async () => {
+    try {
+      const deleteN = await deleteNote({ noteId, userId });
+      if (deleteN) {
+        toast.success("Successfully deleted the Note");
+      } else {
+        toast.error("Could not delete Note");
+      }
+    } catch (e: any) {
+      toast.error("Could not delete Note");
     }
   };
 
@@ -93,6 +114,7 @@ export function ReadNoteDialog({
           {isPublished ? "Publish" : "Private"}
         </Badge>
         <Button
+          onClick={handleDeleteNote}
           variant={"destructive"}
           className="opacity-60 hover:opacity-100 transition-all"
         >
