@@ -2,6 +2,7 @@
 
 import { createNote, editNoteById } from "@/services/notes.service";
 import { NoteType } from "./(dashboard)/_components/CreateNote";
+import { revalidatePath } from "next/cache";
 
 export async function saveNoteToDB({
   content,

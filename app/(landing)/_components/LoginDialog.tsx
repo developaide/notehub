@@ -30,7 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import Separator from "./Separator";
 
-const registerForm = z.object({
+const loginForm = z.object({
   name: z.string().min(3, {
     message: "name must be at least 3 character",
   }),
@@ -40,15 +40,15 @@ const registerForm = z.object({
 });
 
 export default function LoginDialog() {
-  const form = useForm<z.infer<typeof registerForm>>({
-    resolver: zodResolver(registerForm),
+  const form = useForm<z.infer<typeof loginForm>>({
+    resolver: zodResolver(loginForm),
     defaultValues: {
       name: "",
       password: "",
     },
   });
 
-  async function onSubmit(value: z.infer<typeof registerForm>) {
+  async function onSubmit(value: z.infer<typeof loginForm>) {
     signIn("credentials", {
       callbackUrl: "/dashboard",
       name: value.name,
