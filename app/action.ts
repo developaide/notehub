@@ -21,6 +21,7 @@ export async function saveNoteToDB({
       coverImg,
       icon,
     });
+    revalidatePath("/");
     return true;
   } catch (e: any) {
     return false;
@@ -30,7 +31,7 @@ export async function saveNoteToDB({
 export async function editTheNote(id: string, payload: Partial<NoteType>) {
   try {
     await editNoteById(id, payload);
-
+    revalidatePath("/");
     return true;
   } catch (e: any) {
     return false;

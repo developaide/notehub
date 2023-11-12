@@ -40,9 +40,9 @@ export function CreateNoteDialog({
 }: CreateNoteDialogProps) {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
-
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Card
           className="min-w-[250px] min-h-[220px] cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
@@ -89,6 +89,7 @@ export function CreateNoteDialog({
               } else {
                 toast.error("Could not create Note");
               }
+              setOpen(false);
             }}
           >
             Save

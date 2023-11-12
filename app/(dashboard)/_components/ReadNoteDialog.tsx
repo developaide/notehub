@@ -35,7 +35,7 @@ export function ReadNoteDialog({
 }: ReadNoteDialogProps) {
   const [editContent, setEditContent] = useState(content);
   const [editTitle, setEditTitle] = useState(title);
-
+  const [open, setOpen] = useState(false);
   const firstText = JSON.parse(editContent)[0].content[0].text;
 
   const handlePublishToggle = async () => {
@@ -68,7 +68,7 @@ export function ReadNoteDialog({
         {isPublished ? "Publish" : "Private"}
       </Badge>
 
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Card
             className="min-w-[250px] min-h-[220px]  cursor-pointer hover:shadow-sm hover:shadow-neutral-400"
@@ -112,6 +112,7 @@ export function ReadNoteDialog({
                 } else {
                   toast.error("Could not edit Note");
                 }
+                setOpen(false);
               }}
             >
               {content === editContent ? "Edit" : "Save changes"}
