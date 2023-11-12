@@ -5,7 +5,7 @@ import Editor from "@/components/editor";
 interface EditorBoxProps {
   initialContent?: string | null;
   setContent: (value: string) => void;
-  editable?: boolean | null;
+  isPublished?: boolean | null;
   userId?: string | null;
   authUserId?: string | null;
 }
@@ -14,7 +14,7 @@ const EditorBox = ({
   setContent,
   userId,
   initialContent,
-  editable,
+  isPublished,
   authUserId,
 }: EditorBoxProps) => {
   function onChangeContent(value: string) {
@@ -22,7 +22,7 @@ const EditorBox = ({
   }
   return (
     <Editor
-      editable={authUserId === userId ? true : false}
+      editable={authUserId === userId || isPublished ? true : false}
       initialContent={initialContent as string}
       onChange={onChangeContent}
     />
