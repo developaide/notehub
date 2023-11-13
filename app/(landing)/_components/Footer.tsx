@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,8 +13,18 @@ const Footer = () => {
         <span className="underline font-bold text-lg">NoteHub</span>
       </Link>
       <div className="w-full md:w-auto flex justify-between items-center gap-4">
-        <Button variant={"ghost"}>Privacy & Policy</Button>
-        <Button variant={"ghost"}>Teams & Conditions</Button>
+        <Link
+          href={"/privacy&policy"}
+          className={buttonVariants({ variant: "ghost" })}
+        >
+          Privacy & Policy
+        </Link>
+        <Link
+          href={"/teams&conditions"}
+          className={buttonVariants({ variant: "ghost" })}
+        >
+          Teams & Conditions
+        </Link>
       </div>
     </footer>
   );
