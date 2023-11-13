@@ -15,3 +15,9 @@ export function dateFormatter(date: Date) {
     year: "2-digit",
   }).format(date);
 }
+
+export function getCurrentYear() {
+  return new Intl.DateTimeFormat("en-Us", {
+    year: "numeric",
+  }).format(new Date());
+}
