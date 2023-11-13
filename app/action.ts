@@ -13,7 +13,7 @@ export async function saveNoteToDB({
   isPublished,
   title,
   userId,
-  coverImg,
+  userName,
   icon,
 }: NoteType) {
   try {
@@ -22,7 +22,7 @@ export async function saveNoteToDB({
       isPublished,
       title,
       userId,
-      coverImg,
+      userName,
       icon,
     });
     revalidatePath("/");

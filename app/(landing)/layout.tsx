@@ -17,7 +17,7 @@ const LandingPageLayout = async ({
         email={session?.user.email}
         image={session?.user.image}
       />
-      <main className="h-full">{children}</main>
+      <main>{children}</main>
     </div>
   );
 };

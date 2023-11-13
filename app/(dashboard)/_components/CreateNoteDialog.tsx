@@ -26,19 +26,21 @@ import IconPicker from "@/components/icon-picker";
 
 type CreateNoteDialogProps = {
   userId?: string;
+  userName?: string;
   saveNoteToDB: ({
     content,
     isPublished,
     title,
     userId,
-    coverImg,
     icon,
+    userName,
   }: NoteType) => Promise<boolean>;
 };
 
 export function CreateNoteDialog({
   saveNoteToDB,
   userId,
+  userName,
 }: CreateNoteDialogProps) {
   const [content, setContent] = useState("");
   const [emoji, setEmoji] = useState("");
@@ -49,12 +51,14 @@ export function CreateNoteDialog({
     if (content === "") {
       return toast.error("Could not create Note with content");
     }
+
     const saveNote = await saveNoteToDB({
       content,
       isPublished: false,
       title,
       userId: userId as string,
       icon: emoji,
+      userName: userName as string,
     });
     if (saveNote) {
       toast.success("Successfully created new Note");

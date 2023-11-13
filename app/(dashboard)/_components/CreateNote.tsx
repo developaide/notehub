@@ -8,6 +8,7 @@ const CreateNote = async () => {
 
   return (
     <CreateNoteDialog
+      userName={session?.user.name as string}
       userId={session?.user.userId}
       saveNoteToDB={saveNoteToDB}
     />

@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import EditorBox from "./EditorBox";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { deleteNote, editTheNote } from "@/app/action";
 import toast from "react-hot-toast";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +29,7 @@ import IconPicker from "@/components/icon-picker";
 type ReadNoteDialogProps = {
   noteId: string;
   userId: string;
+  userName: string;
   authUserId: string;
   title: string;
   content: string;
@@ -36,6 +37,7 @@ type ReadNoteDialogProps = {
   createdAt?: Date;
   updatedAt?: Date;
   icon?: string;
+  showName?: boolean;
 };
 
 export function ReadNoteDialog({
@@ -46,8 +48,10 @@ export function ReadNoteDialog({
   content,
   isPublished,
   createdAt,
+  userName,
   updatedAt,
   icon,
+  showName,
 }: ReadNoteDialogProps) {
   const [editContent, setEditContent] = useState(content);
   const [editTitle, setEditTitle] = useState(title);
@@ -56,23 +60,27 @@ export function ReadNoteDialog({
   const firstText = JSON.parse(editContent)[0].content[0].text;
 
   const handlePublishToggle = async () => {
-    try {
-      const edit = await editTheNote(noteId, {
-        isPublished: isPublished ? false : true,
-      });
-      if (edit) {
-        isPublished
-          ? toast.success(
-              `Successfully private the Note with ID ${noteId.slice(0, 5)}`
-            )
-          : toast.success(
-              `Successfully published the Note with ID ${noteId.slice(0, 5)}`
-            );
-      } else {
+    if (authUserId === userId) {
+      try {
+        const edit = await editTheNote(noteId, {
+          isPublished: isPublished ? false : true,
+        });
+        if (edit) {
+          isPublished
+            ? toast.success(
+                `Successfully private the Note with ID ${noteId.slice(0, 5)}`
+              )
+            : toast.success(
+                `Successfully published the Note with ID ${noteId.slice(0, 5)}`
+              );
+        } else {
+          toast.error("Couldn't publish the Note!");
+        }
+      } catch (e: any) {
         toast.error("Couldn't publish the Note!");
       }
-    } catch (e: any) {
-      toast.error("Couldn't publish the Note!");
+    } else {
+      toast.error("Only authorized person can change the state of this note");
     }
   };
 
@@ -105,6 +113,7 @@ export function ReadNoteDialog({
       toast.error("Could not delete Note");
     }
   };
+  console.log(showName);
 
   return (
     <div className="relative ">
@@ -119,16 +128,18 @@ export function ReadNoteDialog({
         >
           {isPublished ? "Publish" : "Private"}
         </Badge>
-        <form action={handleDeleteNote}>
-          <Button
-            type="submit"
-            formAction={handleDeleteNote}
-            variant={"destructive"}
-            className="opacity-60 hover:opacity-100 transition-all"
-          >
-            <TrashIcon />
-          </Button>
-        </form>
+        {authUserId === userId && (
+          <form action={handleDeleteNote}>
+            <Button
+              type="submit"
+              formAction={handleDeleteNote}
+              variant={"destructive"}
+              className="opacity-60 hover:opacity-100 transition-all"
+            >
+              <TrashIcon />
+            </Button>
+          </form>
+        )}
       </div>
 
       <Dialog
@@ -162,14 +173,23 @@ export function ReadNoteDialog({
               </CardTitle>
             </CardHeader>
             <CardContent className="line-clamp-1">{firstText}</CardContent>
-            <CardFooter className="absolute bottom-0 flex-col justify-start items-start">
-              <h3 className="text-neutral-400">
-                {dateFormatter(createdAt as Date)}
-              </h3>
-              <h3 className="text-neutral-400">
-                {createdAt?.toString() !== updatedAt?.toString() &&
-                  `${dateFormatter(updatedAt as Date)} edited`}
-              </h3>
+            <CardFooter className="absolute bottom-0 flex justify-between items-center w-full">
+              {showName &&
+                userName &&
+                (userName && userId !== authUserId ? (
+                  <Button variant={"ghost"}>{userName}</Button>
+                ) : (
+                  <Button variant={"ghost"}>You</Button>
+                ))}
+              <div>
+                <h3 className="text-neutral-400">
+                  {dateFormatter(createdAt as Date)}
+                </h3>
+                <h3 className="text-neutral-400">
+                  {createdAt?.toString() !== updatedAt?.toString() &&
+                    `${dateFormatter(updatedAt as Date)} edited`}
+                </h3>
+              </div>
             </CardFooter>
           </Card>
         </DialogTrigger>

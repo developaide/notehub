@@ -18,6 +18,7 @@ const Dashboard = async () => {
       {notes &&
         notes.map((note) => (
           <ReadNote
+            userName={note.userName}
             userId={note.userId}
             noteId={note._id.toString()}
             title={note.title}
@@ -27,6 +28,7 @@ const Dashboard = async () => {
             createdAt={note.createdAt}
             updatedAt={note.updatedAt}
             icon={note.icon}
+            showName={false}
           />
         ))}
     </div>

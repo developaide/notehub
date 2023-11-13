@@ -27,17 +27,17 @@ export function UserAvatar({ email, image, name }: UserAvatarProp) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button variant="ghost" className="relative h-8  w-8 rounded-full">
           <Avatar className="h-12 w-12">
             <AvatarImage
-              src={image === "img" ? "/userProfile.png" : image}
+              src={image === "no_image" ? "/user.png" : image}
               alt={name}
             />
             <AvatarFallback>{name}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent className="w-60" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-lg font-medium leading-none mb-2">{name}</p>

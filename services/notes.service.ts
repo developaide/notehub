@@ -4,10 +4,10 @@ import { ObjectId } from "mongodb";
 export type NoteType = {
   title: string;
   userId: string;
+  userName: string;
   content: string;
   isPublished: boolean;
   icon?: string;
-  coverImg?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -18,7 +18,7 @@ export async function createNote({
   title,
   userId,
   icon,
-  coverImg,
+  userName,
 }: NoteType) {
   try {
     (await db()).collection<NoteType>("notes").insertOne({
@@ -26,8 +26,8 @@ export async function createNote({
       content,
       isPublished,
       userId,
+      userName: userName,
       icon: icon ? icon : "no_icon",
-      coverImg: coverImg ? coverImg : "no_coverImg",
       createdAt: new Date(),
       updatedAt: new Date(),
     });

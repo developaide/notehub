@@ -26,6 +26,7 @@ export const authOptions: AuthOptions = {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRETS as string,
     }),
+
     CredentialsProvider({
       name: "Credentials",
       credentials: {

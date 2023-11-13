@@ -9,6 +9,7 @@ const Community = async () => {
       {notes &&
         notes.map((note) => (
           <ReadNote
+            userName={note.userName}
             userId={note.userId}
             noteId={note._id.toString()}
             title={note.title}
@@ -18,6 +19,7 @@ const Community = async () => {
             createdAt={note.createdAt}
             updatedAt={note.updatedAt}
             icon={note.icon}
+            showName={true}
           />
         ))}
     </div>

@@ -49,30 +49,34 @@ const RegisterFrom = () => {
   });
 
   async function onSubmit(value: z.infer<typeof registerForm>) {
-    const { data, status } = await axios.post(
-      "http://localhost:3000/api/users",
-      {
-        email: value.email,
-        name: value.name,
-        password: value.password,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+    try {
+      const { data, status } = await axios.post(
+        "http://localhost:3000/api/users",
+        {
+          email: value.email,
+          name: value.name,
+          password: value.password,
         },
-      }
-    );
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
 
-    if (status === 201) {
-      toast.success("Successfully register");
-      return router.push("/");
-    } else {
-      toast.error("Could not register");
+      if (status === 201) {
+        toast.success("Successfully register");
+        return router.push("/");
+      } else {
+        toast.error("Could not register");
+      }
+    } catch (e: any) {
+      toast.error(e.message);
     }
   }
   return (
-    <div className="w-[90%] md:w-[70%] lg:w-[55%] xl:w-[45%] h-full  mt-10 mb-5  mx-auto">
+    <div className="w-[90%] md:w-[70%] lg:w-[55%] xl:w-[45%] h-full  mt-10 mb-5 pb-10  mx-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

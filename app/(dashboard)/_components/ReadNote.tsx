@@ -11,15 +11,19 @@ const ReadNote = async ({
   createdAt,
   updatedAt,
   icon,
+  userName,
+  showName,
 }: {
   userId: string;
   noteId: string;
+  userName: string;
   title: string;
   content: string;
   isPublished: boolean;
   createdAt?: Date;
   updatedAt?: Date;
   icon?: string;
+  showName?: boolean;
 }) => {
   const session = await getServerSession(authOptions);
 
@@ -34,6 +38,8 @@ const ReadNote = async ({
       createdAt={createdAt}
       updatedAt={updatedAt}
       icon={icon}
+      userName={userName}
+      showName={showName}
     />
   );
 };
