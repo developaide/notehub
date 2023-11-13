@@ -1,2 +1,1 @@
-- display owner name of note
-- create hub for all public notes
+# NoteHub
