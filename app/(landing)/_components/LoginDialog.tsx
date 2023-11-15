@@ -67,14 +67,14 @@ export default function LoginDialog() {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-xl">Login To NoteHub</DialogTitle>
-          <DialogDescription className="text-md">
+          {/* <DialogDescription className="text-md">
             Login in to our with your desire methods
-          </DialogDescription>
-          <DialogDescription>
+          </DialogDescription> */}
+          {/* <DialogDescription>
             <Link className="text-blue-400 underline" href={"/register"}>
               New user? register here
             </Link>
-          </DialogDescription>
+          </DialogDescription> */}
         </DialogHeader>
 
         <Button onClick={() => signIn("google", { callbackUrl: "/dashboard" })}>
@@ -101,9 +101,9 @@ export default function LoginDialog() {
           Login with Github
         </Button>
 
-        <Separator />
+        {/* <Separator /> */}
 
-        <Form {...form}>
+        {/* <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
@@ -144,7 +144,7 @@ export default function LoginDialog() {
 
             <Button type="submit">Login</Button>
           </form>
-        </Form>
+        </Form> */}
       </DialogContent>
     </Dialog>
   );

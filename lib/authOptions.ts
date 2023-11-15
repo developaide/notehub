@@ -26,36 +26,36 @@ export const authOptions: AuthOptions = {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRETS as string,
     }),
+    //* currently credentials provider is not support
+    // CredentialsProvider({
+    //   name: "Credentials",
+    //   credentials: {
+    //     name: { label: "Name", placeholder: "e.g foo", type: "text" },
+    //     password: {
+    //       label: "Password",
+    //       placeholder: "e.g foo123",
+    //       type: "password",
+    //     },
+    //   },
+    //   async authorize(credentials, req) {
+    //     const username = encodeURIComponent(credentials?.name as string);
+    //     const password = encodeURIComponent(credentials?.password as string);
 
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        name: { label: "Name", placeholder: "e.g foo", type: "text" },
-        password: {
-          label: "Password",
-          placeholder: "e.g foo123",
-          type: "password",
-        },
-      },
-      async authorize(credentials, req) {
-        const username = encodeURIComponent(credentials?.name as string);
-        const password = encodeURIComponent(credentials?.password as string);
+    //     const res = await fetch(
+    //       `http:localhost:3000/api/users?name=${username}&password=${password}`,
+    //       {
+    //         method: "GET",
+    //       }
+    //     );
 
-        const res = await fetch(
-          `http:localhost:3000/api/users?name=${username}&password=${password}`,
-          {
-            method: "GET",
-          }
-        );
-
-        const data = await res.json();
-        if (res.ok && data.data) {
-          return data.data;
-        } else {
-          return null;
-        }
-      },
-    }),
+    //     const data = await res.json();
+    //     if (res.ok && data.data) {
+    //       return data.data;
+    //     } else {
+    //       return null;
+    //     }
+    //   },
+    // }),
   ],
   callbacks: {
     async jwt({ token, account }) {
