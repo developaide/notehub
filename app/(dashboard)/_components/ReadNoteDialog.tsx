@@ -113,7 +113,6 @@ export function ReadNoteDialog({
       toast.error("Could not delete Note");
     }
   };
-  console.log(showName);
 
   return (
     <div className="relative ">
